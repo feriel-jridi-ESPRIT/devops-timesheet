@@ -61,7 +61,8 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 
 	@Transactional
 	public void deleteDepartementById(int depId) {
-		deptRepoistory.delete(deptRepoistory.findById(depId).get());	
+				deptRepoistory.delete(deptRepoistory.findById(depId).orElse(null));
+
 	}
 
 
