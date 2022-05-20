@@ -99,7 +99,7 @@ public class ControllerEmployeImpl  {
 		this.setActif(empl.isActif()); 
 		this.setEmail(empl.getEmail());
 		this.setRole(empl.getRole());
-		this.setPassword(empl.getPassword());
+		this.setPassword(empl.getPwd());
 		this.setEmployeIdToBeUpdated(empl.getId());
 
 		return navigateTo; 
