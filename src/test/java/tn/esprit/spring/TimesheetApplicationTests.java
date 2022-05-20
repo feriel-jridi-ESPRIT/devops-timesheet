@@ -52,33 +52,6 @@ class TimesheetApplicationTests {
 
 
 	@Test
-	void testAjouterTimesheet(){
-		log.info("testAjouterTimesheet begins");
-		Calendar calendar =  new GregorianCalendar(2020,Calendar.FEBRUARY,1);
-		Calendar calendar2 =  new GregorianCalendar(2021,Calendar.FEBRUARY,1);
-		Date date =  calendar.getTime();
-		Date date2 =  calendar2.getTime();
-		timeSheetService.ajouterTimesheet(idMission, idEmploye, date, date2);
-		TimesheetPK timesheetPK = new TimesheetPK(idMission,idEmploye,date,date2);
-		Timesheet timeSheetExpected = timesheetRepository.findBytimesheetPK(timesheetPK);
-		assertEquals(timeSheetExpected.getTimesheetPK(),timesheetPK);
-		log.info("testAjouterTimesheet ends");
-
-	}
-	@Test
-	 void testAffecterMissionADepartement() {
-		log.info("testAffecterMissionADepartement begins");
-		timeSheetService.affecterMissionADepartement(idMission, idDepartment);
-		Optional<Mission> missionRepo = missionRepository.findById(idMission);
-		if (missionRepo.isPresent()) {
-			Mission newMission = missionRepo.get();
-			Departement newDepartement = newMission.getDepartement();
-			assertEquals(newDepartement.getId(), idDepartment);
-		}
-		log.info("test Affecter mission A departement ends");
-	}
-
-	@Test
 	  void testValiderTimesheet(){
 		log.info("testValiderTimesheet begins");
 		Calendar calendar =  new GregorianCalendar(2020,Calendar.FEBRUARY,1);
