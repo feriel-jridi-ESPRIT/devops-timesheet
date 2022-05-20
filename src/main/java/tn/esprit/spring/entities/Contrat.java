@@ -1,5 +1,8 @@
 package tn.esprit.spring.entities;
 
+
+import tn.esprit.spring.dto.ContratRequestModel;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -10,7 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.Pattern;
 
 @Entity
 public class Contrat implements Serializable {
@@ -25,9 +27,7 @@ public class Contrat implements Serializable {
 	private Date dateDebut;
 	
 	private String typeContrat;
-	
-	
-	private float telephone;
+
 	
 	@OneToOne
 	private Employe employe;
@@ -42,6 +42,12 @@ public class Contrat implements Serializable {
 		this.dateDebut = dateDebut;
 		this.typeContrat = typeContrat;
 		this.salaire = salaire;
+	}
+
+	public Contrat(ContratRequestModel contratRequestModel) {
+		this.dateDebut = contratRequestModel.getDateDebut();
+		this.typeContrat = contratRequestModel.getTypeContrat();
+		this.salaire = contratRequestModel.getSalaire();
 	}
 
 

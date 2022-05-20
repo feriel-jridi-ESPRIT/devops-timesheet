@@ -29,7 +29,7 @@ import org.apache.log4j.Logger;
 @Slf4j
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
-public class EntrepriseServiceImplTest {
+ class EntrepriseServiceImplTest {
 
     private int idDepartement;
 
@@ -48,7 +48,7 @@ public class EntrepriseServiceImplTest {
     }
 
         @Test
-    public void testAjouterDepartement() {
+     void testAjouterDepartement() {
         Departement departement = createDepartement();
         departement.setId(5001);
         idDepartement = entrepriseService.ajouterDepartement(departement);
@@ -57,7 +57,7 @@ public class EntrepriseServiceImplTest {
     }
 
     @Test
-    public void testGetAllDepartementsNamesByEntreprise(){
+    void testGetAllDepartementsNamesByEntreprise(){
         log.info("test GetAllDepartementsNamesByEntreprise");
         Entreprise returnedEnterprise = new Entreprise("Be-softilys","041548785588");
         List<Departement> departments = Arrays.asList(new Departement("Edition logiciel"),
@@ -67,13 +67,12 @@ public class EntrepriseServiceImplTest {
 
         when(entrepriseRepository.findById(1)).thenReturn(entreprise);
         List<String> listDepsByEnterprise = entrepriseService.getAllDepartementsNamesByEntreprise(1);
-        assertThat(listDepsByEnterprise).containsExactly("Edition logiciel", "Assurance", "Service client");
-        assertThat(listDepsByEnterprise.size()).isEqualTo(3);
+        assertThat(listDepsByEnterprise).containsExactly("Edition logiciel", "Assurance", "Service client").hasSize(3);
         log.info("fin de la méthode GetAllDepartementsNamesByEntreprise");
     }
 
     @Test
-    public void testDeleteDepartement() {
+     void testDeleteDepartement() {
         log.info("test delete Departement");
         Departement departement = createDepartement();
         departement.setId(5002);

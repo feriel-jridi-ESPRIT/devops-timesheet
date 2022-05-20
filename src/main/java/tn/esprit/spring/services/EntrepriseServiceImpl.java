@@ -1,6 +1,7 @@
 package tn.esprit.spring.services;
 import org.apache.log4j.Logger;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ import tn.esprit.spring.repository.EntrepriseRepository;
 @Service
 public class EntrepriseServiceImpl implements IEntrepriseService {
 
-	private static final Logger log = Logger.getLogger(ContratServiceImpl.class);
+	private static final Logger log = Logger.getLogger(EntrepriseServiceImpl.class);
 	@Autowired
     EntrepriseRepository entrepriseRepoistory;
 	@Autowired
@@ -73,7 +74,7 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 			Entreprise entrepriseManagedEntity = entrepriseRepoistory.findById(entrepriseId).orElse(null);
 			if (entrepriseManagedEntity==null) {
 				log.error("Entreprise does not exist");
-				return null;}
+				return Collections.emptyList();}
 			for (Departement dep : entrepriseManagedEntity.getDepartements()) {
 				depNames.add(dep.getName());
 			}
@@ -86,14 +87,14 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 	}
 	@Transactional
 	public void deleteEntrepriseById(int entrepriseId) {
-		entrepriseRepoistory.delete(entrepriseRepoistory.findById(entrepriseId).get());	
+		entrepriseRepoistory.delete(entrepriseRepoistory.findById(entrepriseId).orElseThrow(() ->new IllegalArgumentException("id not found")));
 	}
 
 	@Transactional
 	public void deleteDepartementById(int depId) {
 		log.debug("Lancement de la méthode deleteDepartementById");
 		try {
-			deptRepoistory.delete(deptRepoistory.findById(depId).orElse(null));
+			deptRepoistory.delete(deptRepoistory.findById(depId).orElseThrow(() ->new IllegalArgumentException("id not found")));
 		} catch (Exception e) {
 			log.error("Erreur dans la méthode deleteDepartementById:" + e);
 		} finally {
@@ -103,7 +104,6 @@ public class EntrepriseServiceImpl implements IEntrepriseService {
 
 
 	public Entreprise getEntrepriseById(int entrepriseId) {
-		return entrepriseRepoistory.findById(entrepriseId).get();	
+		return entrepriseRepoistory.findById(entrepriseId).orElse(null);
 	}
-
 }

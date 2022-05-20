@@ -9,7 +9,6 @@ import tn.esprit.spring.entities.Entreprise;
 import tn.esprit.spring.entities.Mission;
 import tn.esprit.spring.entities.Timesheet;
 
-
 public interface IEmployeService {
 	
 	public Employe authenticate(String login, String password) ;
