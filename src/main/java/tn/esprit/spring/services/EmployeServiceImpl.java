@@ -3,7 +3,9 @@ package tn.esprit.spring.services;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +23,7 @@ import tn.esprit.spring.repository.TimesheetRepository;
 
 @Service
 public class EmployeServiceImpl implements IEmployeService {
+	private static final Logger log = Logger.getLogger(EmployeServiceImpl.class);
 
 	@Autowired
 	EmployeRepository employeRepository;
@@ -44,42 +47,51 @@ public class EmployeServiceImpl implements IEmployeService {
 
 
 	public void mettreAjourEmailByEmployeId(String email, int employeId) {
-		Employe employe = employeRepository.findById(employeId).get();
+		Optional<Employe> employeOpt = employeRepository.findById(employeId);
+if (employeOpt.isPresent()){
+		Employe employe = employeOpt.get();
 		employe.setEmail(email);
-		employeRepository.save(employe);
+		employeRepository.save(employe);}
 
 	}
 
-	@Transactional	
+	@Transactional
 	public void affecterEmployeADepartement(int employeId, int depId) {
-		Departement depManagedEntity = deptRepoistory.findById(depId).get();
-		Employe employeManagedEntity = employeRepository.findById(employeId).get();
+		Departement depManagedEntity = deptRepoistory.findById(depId).orElse(null);
+		Employe employeManagedEntity = employeRepository.findById(employeId).orElse(null);
+		if (depManagedEntity != null && employeManagedEntity != null) {
+			List<Employe> employes = depManagedEntity.getEmployes();
+			if(employes == null){
 
-		if(depManagedEntity.getEmployes() == null){
+				employes = new ArrayList<>();
+				employes.add(employeManagedEntity);
+				depManagedEntity.setEmployes(employes);
+			}else{
 
-			List<Employe> employes = new ArrayList<>();
-			employes.add(employeManagedEntity);
-			depManagedEntity.setEmployes(employes);
-		}else{
+				depManagedEntity.getEmployes().add(employeManagedEntity);
 
-			depManagedEntity.getEmployes().add(employeManagedEntity);
+			}
 		}
-
-		// à ajouter? 
-		deptRepoistory.save(depManagedEntity); 
 
 	}
 	@Transactional
 	public void desaffecterEmployeDuDepartement(int employeId, int depId)
 	{
-		Departement dep = deptRepoistory.findById(depId).get();
+		log.info("Désaffecter un employé du département");
+		Optional<Departement> dep = deptRepoistory.findById(depId);
 
-		int employeNb = dep.getEmployes().size();
-		for(int index = 0; index < employeNb; index++){
-			if(dep.getEmployes().get(index).getId() == employeId){
-				dep.getEmployes().remove(index);
-				break;//a revoir
+		if (dep.isPresent()) {
+			int employeNb = dep.get().getEmployes().size();
+			for (int index = 0; index < employeNb; index++) {
+				if (dep.get().getEmployes().get(index).getId() == employeId) {
+					log.info("L'id d'employé fournit doit être existant");
+					dep.get().getEmployes().remove(index);
+					break;// a revoir
+				}
 			}
+			log.info("La méthode desaffecterEmployeDuDepartement est terminée avec succés");
+		} else {
+			log.error("Departement inexistant");
 		}
 	} 
 	
@@ -91,36 +103,68 @@ public class EmployeServiceImpl implements IEmployeService {
 	}
 
 	public void affecterContratAEmploye(int contratId, int employeId) {
-		Contrat contratManagedEntity = contratRepoistory.findById(contratId).get();
-		Employe employeManagedEntity = employeRepository.findById(employeId).get();
+		log.info("Lancement de la méthode affecterContratAEmploye");
+		Optional<Contrat> contratManagedEntityOpt = contratRepoistory.findById(contratId);
+		Optional<Employe> employeManagedEntityOpt = employeRepository.findById(employeId);
 
-		contratManagedEntity.setEmploye(employeManagedEntity);
-		contratRepoistory.save(contratManagedEntity);
+		if (contratManagedEntityOpt.isPresent()) {
+			if (employeManagedEntityOpt.isPresent()) {
+				Contrat contrat = contratManagedEntityOpt.get();
+				Employe employe = employeManagedEntityOpt.get();
+				contrat.setEmploye(employe);
+				contratRepoistory.save(contrat);
+				log.info("La méthode affecterContratAEmploye est términé avec succés");
+			} else {
+				log.error("Employe inexistant");
+			}
+		} else {
+			log.error("Contrat inexistant");
+		}
 
 	}
 
 	public String getEmployePrenomById(int employeId) {
-		Employe employeManagedEntity = employeRepository.findById(employeId).get();
-		return employeManagedEntity.getPrenom();
+		try {
+			Optional<Employe> employeManagedEntity = employeRepository.findById(employeId);
+			if (employeManagedEntity.isPresent()) {
+				return employeManagedEntity.get().getPrenom();
+			} else {
+				return null;
+			}
+		} catch (Exception e) {
+			return null;
+		}
 	}
 	 
 	public void deleteEmployeById(int employeId)
 	{
-		Employe employe = employeRepository.findById(employeId).get();
+		try {
+			Optional<Employe> employeOpt = employeRepository.findById(employeId);
 
-		//Desaffecter l'employe de tous les departements
-		//c'est le bout master qui permet de mettre a jour
-		//la table d'association
-		for(Departement dep : employe.getDepartements()){
-			dep.getEmployes().remove(employe);
+			// Desaffecter l'employe de tous les departements
+			// c'est le bout master qui permet de mettre a jour
+			// la table d'association
+			if (employeOpt.isPresent()) {
+				Employe employe = employeOpt.get();
+				for (Departement dep : employe.getDepartements()) {
+					dep.getEmployes().remove(employe);
+				}
+				employeRepository.delete(employe);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-
-		employeRepository.delete(employe);
 	}
 
 	public void deleteContratById(int contratId) {
-		Contrat contratManagedEntity = contratRepoistory.findById(contratId).get();
-		contratRepoistory.delete(contratManagedEntity);
+		try {
+			Optional<Contrat> contratManagedEntityOpt = contratRepoistory.findById(contratId);
+			if (contratManagedEntityOpt.isPresent()) {
+				contratRepoistory.delete(contratManagedEntityOpt.get());
+			}
+		} catch (Exception e) {
+e.printStackTrace();		}
+
 
 	}
 

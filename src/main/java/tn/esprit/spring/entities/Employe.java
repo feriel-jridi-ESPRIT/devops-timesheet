@@ -16,6 +16,7 @@ import javax.persistence.OneToOne;
 import javax.validation.constraints.Pattern;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import tn.esprit.spring.request.EmployeRequestModel;
 
 
 @Entity
@@ -63,8 +64,13 @@ public class Employe implements Serializable {
 	public Employe() {
 		super();
 	}
-	
-		
+	public Employe(EmployeRequestModel employeRequestModel) {
+		this.nom = employeRequestModel.getNom();
+		this.prenom = employeRequestModel.getPrenom();
+		this.email = employeRequestModel.getEmail();
+		this.actif = employeRequestModel.isActif();
+		this.role = employeRequestModel.getRole();
+	}
 	public Employe(int id, String prenom, String nom, String email, String password, boolean actif, Role role) {
 		super();
 		this.id = id;

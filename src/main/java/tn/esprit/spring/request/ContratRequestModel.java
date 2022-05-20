@@ -1,6 +1,5 @@
 package tn.esprit.spring.request;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,6 +12,9 @@ import java.util.Date;
 @Setter
 @AllArgsConstructor
 public class ContratRequestModel {
+
+
+
 
     @Temporal(TemporalType.DATE)
     private Date dateDebut;
