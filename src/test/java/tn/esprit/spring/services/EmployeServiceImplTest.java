@@ -78,59 +78,6 @@ public class EmployeServiceImplTest {
         assertEquals(iempServ.getAllEmployes(),employees);
     }
 
-    @Test
-    public void affecterEmployeADepartementTest(){
-        LOG.info("Start Method affecterEmployeADepartement ");
-        Employe e = createEmploye();
-        Departement d = createDepartement();
-        LOG.info(" Testt *** " + e.getNom());
-       d.setId(10000);
-        Assert.assertTrue(d.getId() > 0);
-      iempServ.affecterEmployeADepartement(e.getId(), d.getId());
-       e = iempServ.getAllEmployes().stream().findFirst().get();
-
-        LOG.info(e.getNom() + " " + e.getPrenom());
-        Departement dd=null;
-     //   for(Departement d:this.employe.getDepartements()) {
-     //       if(d.getId()==this.departement.getId())
-      //          dd=d;
-     //   }
-     //   Assert.assertTrue(dd.getId()==this.departement.getId());
-
-       // LOG.info(this.employe);
-      //  LOG.info(this.employe);
-       // LOG.info(this.employe);
-
-        LOG.info("End Method affecterEmployeADepartement ");
-
-    }
-
-    @Test
-    public void affecterContratAEmploye() {
-
-        LOG.info("Start Method affecterContratAEmploye");
-        LOG.info(this.contrat);
-       // LOG.info(this.employe);
-
-     //   iempServ.affecterContratAEmploye(this.contrat.getReference(), this.employe.getId());
-      //  this.employe = iempServ.getAllEmployes().stream().filter(x -> x.getId() == this.employe.getId()).findFirst().get();
-      //  Assert.assertEquals(this.employe.getContrat().getReference(), this.contrat.getReference());
-
-        LOG.info("End Method affecterContratAEmploye");
-    }
-
-    @Test
-    public void deleteEmployeById() {
-        LOG.info("Start Method deleteEmployeById");
-      //  this.employe = iempServ.getAllEmployes().stream().filter(x -> x.getId() == this.employe.getId()).findFirst().get();
-
-      //  LOG.info(this.employe);
-        //iempServ.deleteEmployeById(this.employe.getId());
-        // Assert.assertNull(iempServ.getEmployePrenomById(this.employe.getId()));
-      //  Assert.assertFalse(empRepoistory.findById(this.employe.getId()).isPresent());
-        LOG.info("End deleteEmployeById");
-
-    }
 
 
 
