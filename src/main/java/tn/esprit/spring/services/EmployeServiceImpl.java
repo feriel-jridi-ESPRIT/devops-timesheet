@@ -32,10 +32,6 @@ public class EmployeServiceImpl implements IEmployeService {
 	@Autowired
 	TimesheetRepository timesheetRepository;
 
-	@Override
-	public Employe authenticate(String login, String password) {
-		return employeRepository.getEmployeByEmailAndPassword(login, password);
-	}
 
 	@Override
 	public int addOrUpdateEmploye(Employe employe) {
@@ -43,6 +39,11 @@ public class EmployeServiceImpl implements IEmployeService {
 		return employe.getId();
 	}
 
+
+	@Override
+	public Employe authenticate(String login, String password) {
+		return null;
+	}
 
 	public void mettreAjourEmailByEmployeId(String email, int employeId) {
 
