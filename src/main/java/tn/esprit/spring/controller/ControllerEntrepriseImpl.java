@@ -1,3 +1,4 @@
+/*
 package tn.esprit.spring.controller;
 
 import java.util.List;
@@ -36,11 +37,11 @@ public class ControllerEntrepriseImpl{
 
 		return ientrepriseservice.getEntrepriseById(1);
 	}
-	
+
 	public int ajouterDepartement(Departement dep) {
 		return ientrepriseservice.ajouterDepartement(dep);
 	}
-	
+
 	public List<String> getAllDepartementsNamesByEntreprise(int entrepriseId) {
 		return ientrepriseservice.getAllDepartementsNamesByEntreprise(entrepriseId);
 	}
@@ -50,3 +51,4 @@ public class ControllerEntrepriseImpl{
 
 	}
 }
+*/

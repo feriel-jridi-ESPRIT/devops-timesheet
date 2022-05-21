@@ -45,14 +45,12 @@ public class ContractServiceTest {
         employe.setNom("test");
         employe.setPrenom("test");
         employe.setRole(Role.INGENIEUR);
-
         return employe;
     }
     @Test
     public void testAjouterContrat() {
         Employe employe = createEmploye();
         Contrat contrat = new Contrat();
-
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.YEAR, 2022);
         cal.set(Calendar.MONTH, Calendar.JANUARY);

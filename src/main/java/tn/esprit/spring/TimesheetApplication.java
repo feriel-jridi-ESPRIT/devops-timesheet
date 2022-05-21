@@ -10,13 +10,12 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 
-import tn.esprit.spring.config.LoginFilter;
 
 @SpringBootApplication
 public class TimesheetApplication {
 
 	public static void main(String[] args) {SpringApplication.run(TimesheetApplication.class, args);}
-
+/*
 	@Bean
 	public ServletRegistrationBean servletRegistrationBean() {
 		FacesServlet servlet = new FacesServlet();
@@ -38,5 +37,6 @@ public class TimesheetApplication {
 		registration.setFilter(new LoginFilter());
 		return registration;
 	}
+	*/
  
 }
